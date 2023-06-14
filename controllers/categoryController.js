@@ -1,6 +1,7 @@
 const Category = require("../models/category");
 const Topping = require("../models/topping");
 const asyncHandler = require("express-async-handler");
+const { body, validationResult } = require("express-validator");
 
 // Display list of all categories.
 exports.category_list = asyncHandler(async (req, res, next) => {
@@ -34,14 +35,45 @@ exports.category_detail = asyncHandler(async (req, res, next) => {
 });
 
 // Display category create form on GET.
-exports.category_create_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: category create GET");
-});
+exports.category_create_get = (req, res, next) => {
+  res.render("category_form", { title: "Create Category" });
+};
 
 // Handle category create on POST.
-exports.category_create_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: category create POST");
-});
+exports.category_create_post = [
+  // validate and sanitize name field
+  body("name", "Category name must contain at least 3 characters")
+    .trim()
+    .isLength({min:3})
+    .escape(),
+
+  //process request after validation & sanitization
+  asyncHandler(async (req, res, next) => {
+    //extract validation errors from a req
+    const errors = validationResult(req);
+
+    //create category object w/ escaped & trimmed data
+    const category = new Category({ category_name: req.body.name});
+
+    if (!errors.isEmpty()) {
+      res.render("category_form", {
+        title: "Create Category",
+        category: category,
+        errors:  errors.array(),
+      });
+      return;
+    } else {
+      //data from form is valid, check if category already exists
+      const catExists = await Category.findOne({ category_name: req.body.name}).exec();
+      if (catExists) {
+        res.redirect(catExists.absolute_url)
+      } else {
+        await category.save();
+        res.redirect(category.absolute_url)
+      }
+    }
+  })
+]
 
 // Display category delete form on GET.
 exports.category_delete_get = asyncHandler(async (req, res, next) => {

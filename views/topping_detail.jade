@@ -1,0 +1,10 @@
+extends layout
+
+block content
+  h1 #{topping.topping_name}
+
+  p #[strong Category:] #{topping.topping_category[0].category_name}
+  p #[strong Description:] #{topping.topping_description}
+  
+  div(style='margin-left:20px;margin-top:20px')
+    h2 Stock: #{topping.topping_stock}

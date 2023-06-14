@@ -8,11 +8,11 @@ block content
 
     h4 Toppings
 
-    dl
+    ul
       each topping in category_toppings
-        dt
-          a(href=topping.url) #{topping.topping_name}
-        dd #{topping.topping_description}
+        li
+        a(href=topping.absolute_url)#[strong #{topping.topping_name}]
+        p #{topping.topping_description}
 
       else
         p This category has no toppings

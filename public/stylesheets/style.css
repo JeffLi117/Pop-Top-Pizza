@@ -9,18 +9,17 @@
 body {
   display: grid;
   grid-template-columns: 20% 80%;
-  padding: 50px;
-  background-color: var(--two);
+  background-color: var(--one);
+  color: var(--five);
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 div.sidebarUl {
-  padding: 1rem;
   grid-row: 1 / 2;
   background-color: var(--one);
 }
 
-ul.sidebarUl > li {
+li {
   list-style-type: none;
   margin: 1rem;
 }
@@ -30,11 +29,31 @@ a {
 }
 
 a:link, a:visited {
-  color: black
+  color: var(--five)
 }
 a:hover {
   color: var(--four);
 }
 a:focus {
   color: var(-three);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: var(--one); 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--four); 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--three); 
 }

@@ -11,7 +11,10 @@ const ToppingSchema = new Schema({
 })
 
 ToppingSchema.virtual("url").get(function() {
-    return `/topping/${this._id}`
+    return `topping/${this._id}`
+})
+ToppingSchema.virtual("absolute_url").get(function() {
+    return `/catalog/topping/${this._id}`
 })
 
 // Export model
