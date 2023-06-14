@@ -1,8 +1,40 @@
+:root {
+  --one :#EFC7C2;
+  --two:#FFE5D4;
+  --three:#BFD3C1;
+  --four:#68A691;
+  --five: #694F5D;
+}
+
 body {
+  display: grid;
+  grid-template-columns: 20% 80%;
   padding: 50px;
+  background-color: var(--two);
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+div.sidebarUl {
+  padding: 1rem;
+  grid-row: 1 / 2;
+  background-color: var(--one);
+}
+
+ul.sidebarUl > li {
+  list-style-type: none;
+  margin: 1rem;
+}
+
 a {
-  color: #00B7FF;
+  text-decoration: none;
+}
+
+a:link, a:visited {
+  color: black
+}
+a:hover {
+  color: var(--four);
+}
+a:focus {
+  color: var(-three);
 }

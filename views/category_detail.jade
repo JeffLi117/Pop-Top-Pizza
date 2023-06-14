@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  h1 Category: #{category.category_name}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Toppings
+
+    dl
+      each topping in category_toppings
+        dt
+          a(href=topping.url) #{topping.topping_name}
+        dd #{topping.topping_description}
+
+      else
+        p This category has no toppings

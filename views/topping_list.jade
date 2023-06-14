@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  h1= title
+
+  ul
+    each topping in topping_list
+      li
+        a(href=topping.url) #[strong #{topping.topping_name}]
+        p.listCategory #[em Category]: #{topping.topping_category[0].category_name}
+        p.listDeets #[em Description]: #{topping.topping_description}
+
+    else
+      li There are no toppings.

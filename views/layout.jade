@@ -4,4 +4,18 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    div.sidebar
+      block sidebar
+        ul.sidebarUl
+          li
+            a(href='/catalog') Home
+          li
+            a(href='/catalog/toppings') All Toppings
+          li
+            a(href='/catalog/categories') All Categories
+          li
+            a(href='/catalog/category/create') Create new category
+          li
+            a(href='/catalog/topping/create') Create new topping
+    div.content
+      block content
