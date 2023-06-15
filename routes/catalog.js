@@ -4,6 +4,7 @@ const router = express.Router();
 // Require controller modules
 const category_controller = require("../controllers/categoryController");
 const topping_controller = require("../controllers/toppingController");
+const cart_controller = require("../controllers/cartController");
 
 /// topping routes ///
 
@@ -33,6 +34,7 @@ router.get("/topping/:id", topping_controller.topping_detail);
 
 // GET request for list of all topping items.
 router.get("/toppings", topping_controller.topping_list);
+
 
 /// category routes ///
 

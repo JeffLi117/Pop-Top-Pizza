@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 //Import routes for "catalog" area of site
-const catalogRouter = require('./routes/catalog'); 
+const catalogRouter = require('./routes/catalog');
 
 var app = express();
 

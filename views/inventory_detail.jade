@@ -1,0 +1,16 @@
+extends layout
+
+block content
+
+  h1 #{title}
+
+  div(style='margin-left:20px;margin-top:20px')
+
+    if inventory_content.length
+        each topping in inventory_content 
+            li 
+                a(href=`/catalog/topping/${topping.topping_ref._id}`) #[strong #{topping.topping_ref.topping_name}]
+                div #{topping.topping_amount}
+    else 
+        p Oh no! Your inventory is empty.
+        a(href="/catalog/toppings") Let's change that!

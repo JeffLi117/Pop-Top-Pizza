@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  h1(style='font-size:4rem;') #[strong BUT WAIT...]
+  h2(style='font-size:3rem;') #[strong Please pick a quantity amount]
+
+  div(style='margin-left:20px;margin-top:20px')
+    if topping.topping_stock > 0
+      form(method='POST' action='')
+        input(type='number', name='toppingAmount', required='true', min='1', max=`${topping.topping_stock}`)
+        button.btn.btn-primary(type='submit') Add To Cart
+    else 
+      p Sorry, we're currently out of this item!
+      | This means that in the short time between clicking "Add to cart" and loading this page, someone must have taken all of it!
+      | Or deleted it.
+      | ... Or the code is broken. Oops!

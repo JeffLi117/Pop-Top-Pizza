@@ -19,6 +19,17 @@ div.sidebarUl {
   background-color: var(--one);
 }
 
+p.addToCart {
+  padding: 5px;
+  width: fit-content;
+  border: 2px solid var(--four);
+  transition: all 0.5s ease-in;
+}
+
+p.addToCart:hover {
+  border: 2px solid var(--two);
+}
+
 li {
   list-style-type: none;
   margin: 1rem;

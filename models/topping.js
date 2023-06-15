@@ -16,6 +16,9 @@ ToppingSchema.virtual("url").get(function() {
 ToppingSchema.virtual("absolute_url").get(function() {
     return `/catalog/topping/${this._id}`
 })
+ToppingSchema.virtual("cart_url").get(function() {
+    return `/users/topping/${this._id}`
+})
 
 // Export model
 module.exports = mongoose.model("Topping", ToppingSchema);
