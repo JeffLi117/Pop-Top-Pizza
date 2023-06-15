@@ -68,7 +68,7 @@ exports.topping_create_post = [
   (req, res, next) => {
     if (!(req.body.category instanceof Array)) {
       if (typeof req.body.category === "undefined") req.body.category = [];
-      else req.body.category = new Array(req.body.genre);
+      else req.body.category = new Array(req.body.category);
     }
     next();
   },
