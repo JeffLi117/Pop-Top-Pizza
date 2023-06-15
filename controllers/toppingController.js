@@ -8,8 +8,8 @@ exports.index = asyncHandler(async (req, res, next) => {
       numToppings, 
       numCategories
     ] = await Promise.all([
-      Topping.countDocuments({}).exec(),
-      Category.countDocuments({}).exec(),
+      Topping.countDocuments({}),
+      Category.countDocuments({}),
     ]);
     
     res.render("index", {
