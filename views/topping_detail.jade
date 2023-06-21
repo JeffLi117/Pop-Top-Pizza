@@ -5,6 +5,8 @@ block content
 
   p #[strong Category:] #{topping.topping_category[0].category_name}
   p #[strong Description:] #{topping.topping_description}
+
+  img.topping_img(src="/public/images"+topping.img_url alt="Individual Image" height="200px")
   
   div(style='margin-left:20px;margin-top:20px')
     if topping.topping_stock > 0

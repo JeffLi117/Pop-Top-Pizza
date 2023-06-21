@@ -8,8 +8,8 @@ exports.index = asyncHandler(async (req, res, next) => {
       numToppings, 
       numCategories
     ] = await Promise.all([
-      Topping.countDocuments({}),
-      Category.countDocuments({}),
+      Topping.countDocuments({}).exec(),
+      Category.countDocuments({}).exec(),
     ]);
     
     res.render("index", {
@@ -25,7 +25,7 @@ exports.topping_list = asyncHandler(async (req, res, next) => {
     .sort({topping_name: 1})
     .populate("topping_category", "category_name")
     .exec();
-  console.log(allToppings[1])
+  /* console.log(allToppings[1]) */
   res.render("topping_list", {title: "Topping List", topping_list: allToppings})
 });
 

@@ -34,6 +34,7 @@ router.get('/cart/update', cart_controller.cart_update) */
   res.send(`A specific cart id, for ID of ${req.params.id}`)
 } */
 router.get('/cart/:id', cart_controller.cart_detail)
+/* router.post('/cart/:id', cart_controller.cart_detail) */
 
 router.post('/cart/:id', cart_controller.cart_checkout)
 

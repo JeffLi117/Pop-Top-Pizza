@@ -19,6 +19,10 @@ ToppingSchema.virtual("absolute_url").get(function() {
 ToppingSchema.virtual("cart_url").get(function() {
     return `/users/topping/${this._id}`
 })
+ToppingSchema.virtual("img_url").get(function() {
+    let lowerAndNoSpace = this.topping_name.toLowerCase().split(" ").join("");
+    return `/${lowerAndNoSpace}.jpg`
+})
 
 // Export model
 module.exports = mongoose.model("Topping", ToppingSchema);

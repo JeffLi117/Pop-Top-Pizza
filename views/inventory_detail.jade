@@ -8,9 +8,10 @@ block content
 
     if inventory_content.length
         each topping in inventory_content 
-            li 
-                a(href=`/catalog/topping/${topping.topping_ref._id}`) #[strong #{topping.topping_ref.topping_name}]
-                div #{topping.topping_amount}
+            li.inventory_item 
+              img.topping_img(src="/public/images/"+(topping.topping_ref.topping_name.toLowerCase().split(" ").join(""))+".jpg" alt="Individual Image" height="60px")
+              a(href=`/catalog/topping/${topping.topping_ref._id}`) #[strong #{topping.topping_ref.topping_name}]
+                span &nbsp; #{topping.topping_amount}
     else 
         p Oh no! Your inventory is empty.
         a(href="/catalog/toppings") Let's change that!

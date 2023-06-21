@@ -17,7 +17,7 @@ exports.cart_detail = asyncHandler(async (req, res, next) => {
         })
     }
 
-    console.log(foundCart);
+    console.log(foundCart.cart_contents);
     res.render("cart_detail", {
         title: "Your Cart Contents",
         cart_content: foundCart.cart_contents,
@@ -111,22 +111,52 @@ exports.topping_add_post = asyncHandler(async (req, res, next) => {
 })
 
 exports.cart_checkout = asyncHandler(async (req, res, next) => {
-    const [allToppings, userCart] = await Promise.all([
+    const [allToppings, userCart, userInv] = await Promise.all([
         Topping.find().exec(),
         Cart.findOne({ cart_ip: req.ip}),
+        Inventory.findOne({ inventory_ip: req.ip}),
     ]);
 
     // later, will want to CHECK cart with overall DB stock to ensure subtraction all checks out (using allToppings from above Promise)
 
-    const newUserInv = new Inventory({
-        inventory_ip: userCart.cart_ip,
-        inventory_contents: userCart.cart_contents,
-    })
+    if (userInv === null) {
+        const newUserInv = new Inventory({
+            inventory_ip: userCart.cart_ip,
+            inventory_contents: userCart.cart_contents,
+        })
+        await newUserInv.save();
+    } else {
+        const userPriorInv = userInv.inventory_contents;
+        for (let i = 0; i < userCart.cart_contents.length; i++) {
+            let alreadyDone = false;
+            for (let k = 0; k < userPriorInv.length; k++) {
+                // checks for same item already in inventory 
+                if (alreadyDone === true) {
+                    console.log("Break b/c done");
+                    break;
+                } else if (userPriorInv[k].topping_ref.topping_name === userCart.cart_contents[i].topping_ref.topping_name) {
+                    // if item exists in inventory, add that amount to it
+                    console.log("Item name: ", userPriorInv[k].topping_ref.topping_name, " total expected qty: ", Number(userCart.cart_contents[i].topping_ref.topping_amount) + Number(userPriorInv[k].topping_ref.topping_amount));
+                    userPriorInv[k].topping_ref.topping_amount = (Number(userCart.cart_contents[i].topping_ref.topping_amount) + Number(userPriorInv[k].topping_ref.topping_amount)).toString();
+                    alreadyDone = true;
+                } else if (alreadyDone === false && k === userPriorInv.length - 1) {
+                    // create new "item slot" by pushing into array
+                    console.log("This is pushing a new item slot into the cart");
+                    console.log(`These two didn't match at all...? ${userPriorInv[k].topping_ref.topping_name} & ${userCart.cart_contents[i].topping_ref.topping_name}`);
+                    userInv.inventory_contents.push(userCart.cart_contents[i]);
+                } else {
+                    console.log("Oopsie");
+                }
+            }
+        }
+        console.log("userInv's inventory_contents are ", userInv.inventory_contents);
+        userInv.save();
+    }
+    
 
-    await newUserInv.save();
     // clear out user cart after it's been relocated to inventory
     userCart.cart_contents = [];
     await userCart.save();
 
-    res.redirect(`/users/cart/`)
+    res.redirect(`/users/userinventory/`)
 })
