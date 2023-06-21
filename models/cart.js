@@ -5,6 +5,7 @@ const Schema = mongoose.Schema;
 const CartSchema = new Schema({ 
     cart_ip: { type: String, required: true },
     cart_contents: [{ type: Object}],
+    errors: [{ type: String}],
 })
 
 CartSchema.virtual("url").get(function() {
