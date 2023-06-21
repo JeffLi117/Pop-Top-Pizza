@@ -136,24 +136,28 @@ exports.cart_checkout = asyncHandler(async (req, res, next) => {
                     break;
                 } else if (userPriorInv[k].topping_ref.topping_name === userCart.cart_contents[i].topping_ref.topping_name) {
                     // if item exists in inventory, add that amount to it
-                    console.log("Item name: ", userPriorInv[k].topping_ref.topping_name, " total expected qty: ", Number(userCart.cart_contents[i].topping_ref.topping_amount) + Number(userPriorInv[k].topping_ref.topping_amount));
-                    userPriorInv[k].topping_ref.topping_amount = (Number(userCart.cart_contents[i].topping_ref.topping_amount) + Number(userPriorInv[k].topping_ref.topping_amount)).toString();
+                    let expectedTotal = Number(userCart.cart_contents[i].topping_amount) + Number(userPriorInv[k].topping_amount)
+                    console.log("Item name: ", userPriorInv[k].topping_ref.topping_name, " total expected qty: ", expectedTotal);
+                    await Inventory.updateOne(
+                        {
+                            inventory_ip: req.ip,
+                            inventory_contents: { $elemMatch: { "topping_ref.topping_name": userCart.cart_contents[i].topping_ref.topping_name} }
+                        },
+                        { $set: { "inventory_contents.$.topping_amount" : expectedTotal.toString() } }
+                    )
                     alreadyDone = true;
                 } else if (alreadyDone === false && k === userPriorInv.length - 1) {
-                    // create new "item slot" by pushing into array
-                    console.log("This is pushing a new item slot into the cart");
-                    console.log(`These two didn't match at all...? ${userPriorInv[k].topping_ref.topping_name} & ${userCart.cart_contents[i].topping_ref.topping_name}`);
+                    // create new "item slot" by pushing into array;
+                    console.log("This is what is being pushed in: ", userCart.cart_contents[i]);
                     userInv.inventory_contents.push(userCart.cart_contents[i]);
-                } else {
-                    console.log("Oopsie");
-                }
+                    alreadyDone = true;
+                } 
             }
         }
         console.log("userInv's inventory_contents are ", userInv.inventory_contents);
-        userInv.save();
+        await userInv.save();
     }
     
-
     // clear out user cart after it's been relocated to inventory
     userCart.cart_contents = [];
     await userCart.save();
