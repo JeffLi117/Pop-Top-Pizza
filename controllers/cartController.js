@@ -105,7 +105,35 @@ exports.topping_add_post = asyncHandler(async (req, res, next) => {
         cart.cart_contents.push(newItem);
         await cart.save();
     } else {
-        cartDB.cart_contents.push(newItem);
+        const userPriorCart = cartDB.cart_contents;
+        let alreadyDone = false;
+        for (let k = 0; k < userPriorCart.length; k++) {
+            // checks for same item already in cart 
+            if (alreadyDone === true) {
+                console.log("Break b/c done");
+                break;
+            } else if (userPriorCart[k].topping_ref.topping_name === newItem.topping_ref.topping_name) {
+                // if item exists in cart, add that amount to it
+                let expectedTotal = Number(newItem.topping_amount) + Number(userPriorCart[k].topping_amount)
+                console.log("Item name: ", userPriorCart[k].topping_ref.topping_name, " total expected qty: ", expectedTotal);
+                await Cart.updateOne(
+                    {
+                        cart_ip: req.ip,
+                        cart_contents: { $elemMatch: { "topping_ref.topping_name": newItem.topping_ref.topping_name} }
+                    },
+                    { $set: { "cart_contents.$.topping_amount" : expectedTotal.toString() } }
+                )
+                alreadyDone = true;
+            } else if (alreadyDone === false && k === userPriorCart.length - 1) {
+                // create new "item slot" by pushing into array;
+                console.log("This is what is being pushed in: ", newItem);
+                cartDB.cart_contents.push(newItem);
+                alreadyDone = true;
+            } 
+        }
+
+        // cartDB.cart_contents.push(newItem);
+        
         await cartDB.save();
     }
 
