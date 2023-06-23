@@ -18,11 +18,12 @@ exports.cart_detail = asyncHandler(async (req, res, next) => {
         })
     }
 
-    console.log(foundCart.cart_contents);
+    // console.log("foundCart contents in cart_detail", foundCart.cart_contents);
     res.render("cart_detail", {
         title: "Your Cart Contents",
         cart_content: foundCart.cart_contents,
         errors: [],
+        cart_id: req.params.id,
     })
 })
 
@@ -76,7 +77,7 @@ exports.cart_add_get = asyncHandler(async (req, res, next) => {
 })
 
 // Display topping add form on GET.
- exports.topping_add_get = asyncHandler(async (req, res, next) => {
+exports.topping_add_get = asyncHandler(async (req, res, next) => {
     const foundTopping = await Promise.all([
       Topping.findById(req.params.id).populate("topping_category").exec(),
     ])
@@ -225,3 +226,33 @@ exports.cart_checkout = [
     })
 ]
 
+exports.cart_delete = asyncHandler(async (req, res, next) => {
+    /* const foundTopping = await Promise.all([
+      Topping.findById(req.params.id).populate("topping_category").exec(),
+    ])
+  
+    res.render("topping_add", {
+      topping: foundTopping[0],
+    }) */
+
+    /* form(method='DELETE' action='')
+        button.delete_btn(type='submit') Delete
+ */
+
+    console.log("This should be deleting an item");
+    res.redirect('/users/cart/');
+});
+
+exports.cart_delete_detail = asyncHandler(async (req, res, next) => {
+
+    console.log("This item ID should be the focus: ", req.params.itemid);
+    const [foundCart] = await Promise.all([
+        Cart.findById(req.params.id).populate("cart_contents").exec(),
+    ])
+
+    res.render("cart_delete", {
+        title: "Your Cart Contents",
+        cart_content: foundCart.cart_contents,
+        errors: [],
+    })
+});

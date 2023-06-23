@@ -61,6 +61,15 @@ li.inventory_item {
   gap: 10px;
 }
 
+button.delete_btn {
+  background-color: var(--two);
+  transition: all 0.1s ease-in;
+}
+
+button.delete_btn:hover {
+  background-color: var(--five);
+}
+
 a {
   text-decoration: none;
 }

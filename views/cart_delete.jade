@@ -12,7 +12,8 @@ block content
                 img.topping_img(src="/public/images/"+(topping.topping_ref.topping_name.toLowerCase().split(" ").join(""))+".jpg" alt="Individual Image" height="60px")
                 a(href=`/catalog/topping/${topping.topping_ref._id}`) #[strong #{topping.topping_ref.topping_name}]
                     span &nbsp; #{topping.topping_amount}
-                a(href=`/users/cart/${cart_id}/delete/${topping.topping_ref._id}`) Remove
+                form(method='DELETE' action='')
+                    button.delete_btn(type='submit') Delete
         form(method='POST' action='')
             input#checkout_input(type='text', placeholder='The secret code' name='checkout_input' required='true')
             button.btn.btn-primary(type='submit') Checkout

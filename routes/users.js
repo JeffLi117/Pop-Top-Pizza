@@ -38,5 +38,8 @@ router.get('/cart/:id', cart_controller.cart_detail)
 
 router.post('/cart/:id', cart_controller.cart_checkout)
 
+router.get('/cart/:id/delete/:itemid', cart_controller.cart_delete_detail)
+
+router.delete('/cart/:id/delete/:itemid', cart_controller.cart_delete)
 
 module.exports = router;
